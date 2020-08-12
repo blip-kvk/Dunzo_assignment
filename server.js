@@ -6,19 +6,28 @@ const rimraf = require("rimraf");
 const directoryPath = path.join(__dirname, 'testCases');
 const outPath = path.join(__dirname, 'outputFiles');
 
-// reads and gets all the testcase json files to be tested
-function readInputDirectory(){
+/**
+ * requires directoryPath where the input files are present
+ * reads and gets all the input json files in an asynchronous way and calls the makeOutputDirectory function
+ */
+function readInputDirectory(directoryPath){
     //passing directoryPath and callback function
     fs.readdir(directoryPath, function (err, files) {
         //handling error
         if (err) {
             return console.log('Unable to scan directory: ' + err);
         }
-        makeOutputDirectory(files);
+        makeOutputDirectory(files, outPath);
     });
 }
 
-function makeOutputDirectory(files){
+/** 
+ * takes output path, files to be made in the output directory as parameter
+ * removes the current output directory if exists and creates new output directory with the same name
+ * then reads all the input files using readFile
+ */
+function makeOutputDirectory(files, outPath){
+    // checking if outputPath exists
     if (fs.existsSync(outPath)){
         rimraf(outPath, function () {
             fs.mkdirSync(outPath); 
@@ -31,8 +40,11 @@ function makeOutputDirectory(files){
     }
 }
 
-// reads the file and gets the data containing number of outlets, inventory of ingredients and composition for each drink asynchronously
-// sends this whole data to be processed to getItemsFinishedByInventory
+/**
+ * takes file name to be read as parameter
+ * reads the file and gets the data containing number of outlets, inventory of ingredients and composition for each drink asynchronously
+ * sends this whole data to be processed to getItemsFinishedByInventory
+ */
 function readFile(file){
     fs.readFile(path.resolve(directoryPath, file), "utf8", function (err, data) {
         if (err) {
@@ -42,9 +54,13 @@ function readFile(file){
     });
 }
 
-// this function finds out the drinks that can be made using the ingredients inventory available and outputs the result to filename_result.txt file
+/**
+ * takes file name and data of the file as input parameters
+ * this function finds out the drinks that can be made using the ingredients inventory available and outputs the result to filename_result.txt file
+ */
 function getItemsFinishedByInventory(file, data){
     data = JSON.parse(data)
+    // deconstructing the data object in single line expecting that all these keywords to be present in data object always
     let { machine: { outlets : { count_n }, total_items_quantity, beverages }} = data;
     let result = "";
     for(let drink in beverages){
@@ -63,6 +79,11 @@ function getItemsFinishedByInventory(file, data){
     }) 
 }
 
+/**
+ * takes ingredients of each drink and total items quantity avaiable as parameters
+ * checks whether all the ingredients are present and available
+ * returns a object which consists information regarding avaiability and missing items if any
+ */
 function checkIfIngredientsAvailable(ingredients, total_items_quantity){
     let returnObj = {
         availability: true,
@@ -85,6 +106,10 @@ function checkIfIngredientsAvailable(ingredients, total_items_quantity){
     return returnObj;
 }
 
+/**
+ * takes ingredients of each drink and total items quantity avaiable as parameters
+ * removes the ingredients used from the total items quantity
+ */
 function removeRequiredIngredients(ingredients, total_items_quantity){
     for(let eachIng in ingredients){
         total_items_quantity[eachIng] -= ingredients[eachIng];
@@ -92,4 +117,4 @@ function removeRequiredIngredients(ingredients, total_items_quantity){
     }
 }
 
-readInputDirectory();
+readInputDirectory(directoryPath);

@@ -1,0 +1,44 @@
+{
+    "machine": {
+        "outlets": {
+            "count_n": 3
+        },
+        "total_items_quantity": {
+            "hot_water": 180,
+            "hot_milk": 70,
+            "ginger_syrup": 100,
+            "sugar_syrup": 100,
+            "tea_leaves_syrup": 100,
+            "elaichi_syrup": 10,
+            "coffee_syrup": 20
+        },
+        "beverages": {
+            "ginger_tea": {
+                "hot_water": 50,
+                "hot_milk": 10,
+                "ginger_syrup": 10,
+                "sugar_syrup": 10,
+                "tea_leaves_syrup": 10
+            },
+            "elaichi_tea": {
+                "hot_water": 50,
+                "hot_milk": 10,
+                "sugar_syrup": 10,
+                "elaichi_syrup": 5,
+                "tea_leaves_syrup": 10
+            },
+            "coffee": {
+                "hot_water": 50,
+                "hot_milk": 10,
+                "coffee_syrup": 30,
+                "sugar_syrup": 10
+            },
+            "hot_milk": {
+                "hot_milk": 50
+            },
+            "hot_water": {
+                "hot_water": 50
+            }
+        }
+    }
+}
