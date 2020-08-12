@@ -1,0 +1,4 @@
+hot_tea is prepared 
+hot_coffee is prepared 
+black_tea is prepared 
+green_tea is prepared 
